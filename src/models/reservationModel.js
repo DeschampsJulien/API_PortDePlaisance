@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const reservationSchema = new mongoose.Schema({
   catwayNumber: { type: Number, required: true },
@@ -8,4 +8,4 @@ const reservationSchema = new mongoose.Schema({
   checkOut: { type: Date, required: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Reservation', reservationSchema);
+module.exports = mongoose.model("Reservation", reservationSchema);

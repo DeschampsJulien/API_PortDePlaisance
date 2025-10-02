@@ -3,20 +3,16 @@ const router = express.Router();
 const { verifyToken } = require("../middlewares/authMiddleware");
 const catwayController = require("../controllers/catwayController");
 
-// Lister tous les catways
-router.get("/", verifyToken, catwayController.getAllCatways);
+// Lister tous les catways depuis le dashboard
+router.get("/home/catways", verifyToken, catwayController.getAllCatways);
 
-// Afficher les détails d’un catway (via query ?id=123 ou form POST)
-router.get("/details/:id", verifyToken, catwayController.getCatwayDetails);
+// Créer un catway depuis le dashboard
+router.post("/home/catways", verifyToken, catwayController.createCatway);
 
-// Créer un catway
-router.post("/", verifyToken, catwayController.createCatway);
+// Modifier un catway depuis le dashboard
+router.post("/home/catways/:id/update", verifyToken, catwayController.updateCatway);
 
-// Modifier la description de l’état d’un catway
-router.post("/update/:id", verifyToken, catwayController.updateCatwayState);
-
-// Supprimer un catway
-router.post("/delete/:id", verifyToken, catwayController.deleteCatway);
+// Supprimer un catway depuis le dashboard
+router.post("/home/catways/:id/delete", verifyToken, catwayController.deleteCatway);
 
 module.exports = router;
-

@@ -1,19 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const { verifyToken } = require("../middlewares/authMiddleware");
-const { getAllUsers, createUser, updateUser, deleteUser } = require("../controllers/authController");
+const { isAuth, isAdmin } = require("../middlewares/authMiddleware");
+const dashboardController = require("../controllers/dashboardController");
 
+// Page d'accueil du dashboard
+router.get("/", isAuth, isAdmin, dashboardController.home);
 
-// Affichage de tous les utilisateur (admin, user)
-router.get("/", verifyToken, getAllUsers);
+// Gestion utilisateurs
+router.get("/users", isAuth, isAdmin, dashboardController.listUsers);
+router.post("/users/create", isAuth, isAdmin, dashboardController.createUser);
+router.post("/users/update", isAuth, isAdmin, dashboardController.updateUser);
+router.post("/users/delete", isAuth, isAdmin, dashboardController.deleteUser);
 
-// Création d’un utilisateur depuis le dashboard
-router.post("/users", verifyToken, createUser);
+// Gestion catways
+router.get("/catways", isAuth, isAdmin, dashboardController.listCatways);
+router.post("/catways/create", isAuth, isAdmin, dashboardController.createCatway);
+router.post("/catways/update", isAuth, isAdmin, dashboardController.updateCatway);
+router.post("/catways/delete", isAuth, isAdmin, dashboardController.deleteCatway);
 
-// Modifier un utilisateur depuis le dashboard
-router.post("/users/:id/update", verifyToken, updateUser);
-
-// Supprimer un utilisateur depuis le dashboard
-router.post("/users/:id/delete", verifyToken, deleteUser);
+// Gestion réservations
+router.get("/reservations", isAuth, isAdmin, dashboardController.listReservations);
 
 module.exports = router;

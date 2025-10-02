@@ -1,81 +1,72 @@
-const Catway = require("../models/Catway");
+const Catway = require("../models/catwayModel");
 
 // Lister tous les catways
 exports.getAllCatways = async (req, res) => {
   try {
     const catways = await Catway.find();
-    res.render("dashboard", { catways, users: [], reservations: [] });
+    return res.render("home/catways", { catways, error: null });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Erreur serveur");
-  }
-};
-
-// Afficher les détails d’un catway
-exports.getCatwayDetails = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const catway = await Catway.findById(id);
-    if (!catway) {
-      return res.status(404).send("Catway introuvable");
-    }
-    res.render("catwayDetails", { catway });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Erreur serveur");
+    return res.render("home/catways", { catways: [], error: "Impossible de charger les catways." });
   }
 };
 
 // Créer un catway
 exports.createCatway = async (req, res) => {
+  const { catwayNumber, type, catwayState } = req.body;
   try {
-    const { catwayNumber, type, catwayState } = req.body;
+    const existingCatway = await Catway.findOne({ catwayNumber });
+    if (existingCatway) {
+      const catways = await Catway.find();
+      return res.render("home/catways", { catways, error: "Ce catway existe déjà." });
+    }
 
-    const newCatway = new Catway({
-      catwayNumber,
-      type,
-      catwayState,
-    });
-
-    await newCatway.save();
-    res.redirect("/dashboard");
+    await Catway.create({ catwayNumber, type, catwayState });
+    return res.redirect("/home/catways");
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Erreur lors de la création du catway");
+    const catways = await Catway.find();
+    return res.render("home/catways", { catways, error: "Erreur lors de la création du catway." });
   }
 };
 
-// Modifier l’état d’un catway
-exports.updateCatwayState = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { catwayState } = req.body;
+// Modifier uniquement l'état d’un catway
+exports.updateCatway = async (req, res) => {
+  const { id } = req.params;
+  const { catwayState } = req.body;
 
-    const updatedCatway = await Catway.findByIdAndUpdate(
+  try {
+    const updated = await Catway.findByIdAndUpdate(
       id,
-      { catwayState },
+      { catwayState }, // ✅ On ne met à jour que l’état
       { new: true }
     );
 
-    if (!updatedCatway) {
-      return res.status(404).send("Catway introuvable");
+    if (!updated) {
+      const catways = await Catway.find();
+      return res.render("home/catways", { catways, error: "Catway introuvable." });
     }
 
-    res.redirect("/dashboard");
+    return res.redirect("/home/catways");
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Erreur lors de la mise à jour du catway");
+    const catways = await Catway.find();
+    return res.render("home/catways", { catways, error: "Erreur lors de la modification de l’état du catway." });
   }
 };
 
 // Supprimer un catway
 exports.deleteCatway = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
-    await Catway.findByIdAndDelete(id);
-    res.redirect("/dashboard");
+    const deleted = await Catway.findByIdAndDelete(id);
+
+    if (!deleted) {
+      const catways = await Catway.find();
+      return res.render("home/catways", { catways, error: "Catway introuvable." });
+    }
+
+    return res.redirect("/home/catways");
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Erreur lors de la suppression du catway");
+    const catways = await Catway.find();
+    return res.render("home/catways", { catways, error: "Erreur lors de la suppression du catway." });
   }
 };

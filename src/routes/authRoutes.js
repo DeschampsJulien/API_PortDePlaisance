@@ -15,6 +15,6 @@ router.get("/logout", (req, res) => {
 });
 
 // Création utilisateur (POST via Postman)
-router.post("/register", createUser);
+// router.post("/register", createUser);
 
 module.exports = router;

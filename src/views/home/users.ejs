@@ -8,15 +8,25 @@
 <body>
 <div class="container mt-5">
 
-  <h1 class="mb-4">Dashboard Capitainerie</h1>
-
-  <% if (error) { %>
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <div>
+    <h1 class="mb-0">Dashboard Capitainerie</h1>
+    <h2 class="mb-0">Formulaire Utilisateurs</h2>
+  </div>
+  <div>
+    <a href="/home" class="btn btn-secondary">
+      <i class="bi bi-arrow-left"></i> Retour
+    </a>
+  </div>
+</div>
+  
+  <!-- Alerte d'erreur -->
+  <% if (typeof error !== "undefined" && error) { %>
     <div class="alert alert-danger"><%= error %></div>
   <% } %>
 
   <div class="row">
-
-    <!-- Zone 1 : Liste des utilisateurs -->
+    <!-- Colonne 1 : Liste des utilisateurs -->
     <div class="col-md-4 mb-4">
       <h3>Liste des utilisateurs</h3>
       <ul class="list-group">
@@ -30,10 +40,10 @@
       </ul>
     </div>
 
-    <!-- Zone 2 : Créer un utilisateur -->
+    <!-- Colonne 2 : Créer un utilisateur -->
     <div class="col-md-4 mb-4">
       <h3>Créer un utilisateur</h3>
-      <form action="/dashboard/users" method="POST" class="border p-3 rounded bg-light">
+      <form action="/home/users" method="POST" class="border p-3 rounded bg-light">
         <div class="mb-2">
           <input type="text" name="name" class="form-control" placeholder="Nom" required>
         </div>
@@ -53,11 +63,14 @@
       </form>
     </div>
 
-    <!-- Zone 3 : Modifier / Supprimer un utilisateur -->
+    <!-- Colonne 3 : Modifier / Supprimer un utilisateur -->
     <div class="col-md-4 mb-4">
       <h3>Modifier / Supprimer utilisateur</h3>
       <% users.forEach(u => { %>
-        <form action="/dashboard/users/<%= u._id %>/update" method="POST" class="border p-3 rounded bg-light mb-3">
+
+      <div class="border p-3 rounded bg-light mb-3">
+        <!-- Formulaire Modifier -->
+        <form action="/home/users/<%= u._id %>/update" method="POST" class="mb-2">
           <div class="mb-2">
             <input type="text" name="name" value="<%= u.name %>" class="form-control" placeholder="Nom" required>
           </div>
@@ -73,48 +86,20 @@
               <option value="admin" <%= u.role === "admin" ? "selected" : "" %>>Admin</option>
             </select>
           </div>
-          <div class="d-flex gap-2">
-            <!-- Bouton Modifier -->
-            <button type="submit" class="btn btn-warning flex-fill">Modifier</button>
-
-            <!-- Bouton Supprimer -->
-            <form action="/dashboard/users/<%= u._id %>/delete" method="POST" class="flex-fill">
-              <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
-            </form>
-          </div>
+          <button type="submit" class="btn btn-warning w-100">Modifier</button>
         </form>
+
+        <!-- Formulaire Supprimer -->
+        <form action="/home/users/<%= u._id %>/delete" method="POST">
+          <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Supprimer cet utilisateur ?')">
+            Supprimer
+          </button>
+        </form>
+      </div>
       <% }) %>
     </div>
   </div>
 </div>
-
-
-<div class="container mt-5">
-  <h2>Créer un Catway</h2>
-  <form action="/catways" method="POST">
-    <div class="mb-3">
-      <label for="catwayNumber" class="form-label">Numéro du Catway</label>
-      <input type="number" class="form-control" id="catwayNumber" name="catwayNumber" required>
-    </div>
-
-    <div class="mb-3">
-      <label for="type" class="form-label">Type</label>
-      <select class="form-select" id="type" name="type" required>
-        <option value="long">Long</option>
-        <option value="short">Short</option>
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label for="catwayState" class="form-label">Description de l'état</label>
-      <input type="text" class="form-control" id="catwayState" name="catwayState" required>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Créer</button>
-  </form>
-</div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
