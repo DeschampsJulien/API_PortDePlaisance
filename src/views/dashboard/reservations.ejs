@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des Réservations</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h1 class="mb-0">Dashboard Capitainerie</h1>
+      <h2 class="mb-0">Formulaire Réservations</h2>
+    </div>
+    <div>
+      <a href="/dashboard" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Retour
+      </a>
+    </div>
+  </div>
+
+  <% if (error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% } %>
+
+  <div class="row">
+    <% catways.forEach(c => { %>
+      <div class="col-md-4 mb-3">
+        <div class="card p-3 shadow">
+          <h5>Catway <%= c.catwayNumber %> (<%= c.type %>)</h5>
+          <p>
+            État :
+            <span class="badge bg-<%= c.catwayState === 'free' ? 'success' : 'danger' %>">
+              <%= c.catwayState %>
+            </span>
+          </p>
+          <a href="/dashboard/catways/<%= c._id %>/reservations" class="btn btn-primary w-100">
+            Voir / Réserver
+          </a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
