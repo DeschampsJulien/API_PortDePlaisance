@@ -24,7 +24,7 @@ exports.loginUser = async (req, res) => {
       maxAge: 3600000,
     });
 
-    res.redirect("/home");
+    res.redirect("/dashboard");
   } catch (err) {
     console.error(err);
     res.render("login", { error: "Erreur serveur" });

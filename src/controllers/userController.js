@@ -1,19 +1,18 @@
 const User = require("../models/userModel");
-const bcrypt = require("bcrypt");
 
 // Récupérer tous les utilisateurs (admin)
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
 
-    res.render("home/users", {
+    res.render("dashboard/users", {
       user: req.user,    // utilisateur connecté
       users: users,     
       error: null
     });
   } catch (err) {
     console.error(err);
-    res.render("home/users", {
+    res.render("dashboard/users", {
       user: req.user,
       users: [],         // au pire une liste vide
       error: "Impossible de charger les utilisateurs"
@@ -21,6 +20,16 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// Récupérer un utilisateur par ID
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).send("Utilisateur introuvable");
+    res.json(user);
+  } catch (err) {
+    res.status(500).send("Erreur serveur");
+  }
+};
 
 // créer un utilisateur (admin)
 exports.createUser = async (req, res) => {
@@ -30,7 +39,7 @@ exports.createUser = async (req, res) => {
     const existing = await User.findOne({ email });
     if (existing) {
       const users = await User.find();
-      return res.render("home/users", {
+      return res.render("dashboard/users", {
         user: req.user,
         users,
         error: "Un utilisateur avec cet email existe déjà.",
@@ -49,7 +58,7 @@ exports.createUser = async (req, res) => {
     await newUser.save();
 
     const users = await User.find();
-    res.render("home/users", {
+    res.render("dashboard/users", {
       user: req.user,
       users,
       error: null,
@@ -57,7 +66,7 @@ exports.createUser = async (req, res) => {
   } catch (err) {
     console.error(err);
     const users = await User.find();
-    res.render("home/users", {
+    res.render("dashboard/users", {
       user: req.user,
       users,
       error: "Erreur lors de la création de l’utilisateur.",
@@ -82,11 +91,11 @@ exports.updateUser = async (req, res) => {
 
     // recharge la liste des utilisateurs pour le dashboard
     const users = await User.find();
-    res.render("home/users", { user: req.user, users, error: null });
+    res.render("dashboard/users", { user: req.user, users, error: null });
   } catch (err) {
     console.error(err);
     const users = await User.find();
-    res.render("home/users", { user: req.user, users, error: "Erreur lors de la mise à jour de l’utilisateur." });
+    res.render("dashboard/users", { user: req.user, users, error: "Erreur lors de la mise à jour de l’utilisateur." });
   }
 };
 
@@ -98,11 +107,11 @@ exports.deleteUser = async (req, res) => {
 
     // Recharge la liste des utilisateurs
     const users = await User.find();
-    res.render("home/users", { user: req.user, users, error: null });
+    res.render("dashboard/users", { user: req.user, users, error: null });
   } catch (err) {
     console.error(err);
     const users = await User.find();
-    res.render("home/users", { user: req.user, users, error: "Erreur lors de la suppression de l’utilisateur." });
+    res.render("dashboard/users", { user: req.user, users, error: "Erreur lors de la suppression de l’utilisateur." });
   }
 };
 

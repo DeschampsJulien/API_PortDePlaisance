@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { loginUser, createUser } = require("../controllers/authController");
+const { loginUser } = require("../controllers/authController");
 
 // Page login
 router.get("/login", (req, res) => res.render("login", { error: null }));

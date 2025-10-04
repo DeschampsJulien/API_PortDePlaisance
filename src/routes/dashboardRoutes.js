@@ -1,24 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const { isAuth, isAdmin } = require("../middlewares/authMiddleware");
-const dashboardController = require("../controllers/dashboardController");
 
-// Page d'accueil du dashboard
-router.get("/", isAuth, isAdmin, dashboardController.home);
+const userController = require("../controllers/userController");
+const catwayController = require("../controllers/catwayController");
+const reservationController = require("../controllers/reservationController");
 
-// Gestion utilisateurs
-router.get("/users", isAuth, isAdmin, dashboardController.listUsers);
-router.post("/users/create", isAuth, isAdmin, dashboardController.createUser);
-router.post("/users/update", isAuth, isAdmin, dashboardController.updateUser);
-router.post("/users/delete", isAuth, isAdmin, dashboardController.deleteUser);
+const { verifyToken } = require("../middlewares/authMiddleware");
 
-// Gestion catways
-router.get("/catways", isAuth, isAdmin, dashboardController.listCatways);
-router.post("/catways/create", isAuth, isAdmin, dashboardController.createCatway);
-router.post("/catways/update", isAuth, isAdmin, dashboardController.updateCatway);
-router.post("/catways/delete", isAuth, isAdmin, dashboardController.deleteCatway);
+// Page accueil
+router.get("/", (req, res) => {
+  res.render("dashboard");
+});
 
-// Gestion réservations
-router.get("/reservations", isAuth, isAdmin, dashboardController.listReservations);
+// Utilisateurs
+router.get("/users",verifyToken, userController.getAllUsers);
+router.get("/users/:id",verifyToken, userController.getUserById);
+router.post("/users",verifyToken, userController.createUser);
+router.put("/users/:id/update",verifyToken, userController.updateUser);
+router.delete("/users/:id/delete",verifyToken, userController.deleteUser);
+
+// Catways
+router.get("/catways",verifyToken, catwayController.getAllCatways);
+router.get("/catways/:id",verifyToken, catwayController.getCatwayById);
+router.post("/catways",verifyToken, catwayController.createCatway);
+router.put("/catways/:id/update",verifyToken, catwayController.updateCatway);
+router.delete("/catways/:id/delete",verifyToken, catwayController.deleteCatway);
+
+// Réservations et liste liées au catway
+router.get("/reservations",verifyToken, reservationController.getCatwaysForReservation);
+router.get("/catways/:id/reservations",verifyToken, reservationController.getReservationsByCatway);
+router.post("/catways/:id/reservations",verifyToken, reservationController.createReservation);
+router.delete("/catways/:id/reservations/:idReservation/delete",verifyToken, reservationController.deleteReservation);
 
 module.exports = router;

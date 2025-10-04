@@ -9,8 +9,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const authRoutes = require("./routes/authRoutes");
-const homeRoutes = require("./routes/homeRoutes");
-// const reservationRoutes = require("./routes/reservationRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 
@@ -27,8 +26,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Routes
 app.use("/auth", authRoutes);
-app.use("/home", homeRoutes);
-// app.use("/home/reservations", reservationRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 // Page d'accueil → redirection vers login
 app.get("/", (req, res) => {
@@ -44,5 +42,5 @@ mongoose
       console.log(`🚀 Application dispo sur http://localhost:${process.env.PORT || 4000}`)
     );
   })
-  .catch((err) => console.error("❌ Erreur MongoDB:", err));
+  .catch((err) => console.error("Erreur MongoDB:", err));
 

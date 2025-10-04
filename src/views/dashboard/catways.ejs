@@ -11,10 +11,10 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
       <h1 class="mb-0">Dashboard Capitainerie</h1>
-      <h2 class="mb-0">Formulaire Catways</h2>
+      <h2 class="mb-0">Formulaire Catway</h2>
     </div>
     <div>
-      <a href="/home" class="btn btn-secondary">
+      <a href="/dashboard" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> Retour
       </a>
     </div>
@@ -43,7 +43,7 @@
     <!-- Créer un Catway -->
     <div class="col-md-4 mb-4">
       <h3>Créer un Catway</h3>
-      <form action="/home/catways" method="POST" class="border p-3 rounded bg-light">
+      <form action="/dashboard/catways" method="POST" class="border p-3 rounded bg-light">
         <div class="mb-2">
           <input type="text" name="catwayNumber" class="form-control" placeholder="Numéro du catway" required>
         </div>
@@ -67,7 +67,7 @@
         
       <div class="border p-3 rounded bg-light mb-3">
         <!-- Formulaire Modifier -->
-        <form action="/home/catways/<%= c._id %>/update" method="POST" class="mb-2">
+        <form action="/dashboard/catways/<%= c._id %>/update?_method=PUT" method="POST" class="mb-2">
           <div class="mb-2">
             <input type="text" class="form-control" value="<%= c.catwayNumber %>" disabled>
           </div>
@@ -81,7 +81,7 @@
           <button type="submit" class="btn btn-warning w-100">Modifier</button>
         </form>
         <!-- Formulaire Supprimer -->
-        <form action="/home/catways/<%= c._id %>/delete" method="POST">
+        <form action="/dashboard/catways/<%= c._id %>/delete?_method=DELETE" method="POST">
           <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Supprimer ce catway ?')">Supprimer</button>
         </form>
       </div>
