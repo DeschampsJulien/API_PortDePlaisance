@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 // Récupérer tous les utilisateurs (admin)
 exports.getAllUsers = async (req, res) => {
