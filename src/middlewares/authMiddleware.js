@@ -9,6 +9,7 @@ exports.verifyToken = async (req, res, next) => {
       return res.redirect("/auth/login");
     }
 
+    // Vérifier le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
 
@@ -23,4 +24,6 @@ exports.verifyToken = async (req, res, next) => {
     res.redirect("/auth/login");
   }
 };
+
+
 

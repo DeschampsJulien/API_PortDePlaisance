@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { loginUser, createUser } = require("../controllers/authController");
 
+
+
 // Page login
 router.get("/login", (req, res) => res.render("login", { error: null }));
 
@@ -18,3 +20,5 @@ router.get("/logout", (req, res) => {
 router.post("/register", createUser);
 
 module.exports = router;
+
+

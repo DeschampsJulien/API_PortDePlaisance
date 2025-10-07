@@ -18,6 +18,9 @@
   <main class="container my-5">
 
     <div class="mb-4">
+      <div class="container" style="padding: 20px;">
+      <h1>👋 Bonjour <%= user ? user.name || 'Utilisateur' : 'Invité' %></h1>
+      <hr>
       <h2 class="h4">Bienvenue sur l’interface de gestion</h2>
       <p>
         Cette API a été conçue pour faciliter la gestion des <strong>utilisateurs</strong>, 

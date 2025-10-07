@@ -7,9 +7,9 @@ const reservationController = require("../controllers/reservationController");
 
 const { verifyToken } = require("../middlewares/authMiddleware");
 
-// Page accueil
-router.get("/", (req, res) => {
-  res.render("dashboard");
+// Page accueil accessible à tous les utilisateurs connectés
+router.get("/", verifyToken, (req, res) => {
+  res.render("dashboard", { user: req.user });
 });
 
 // Utilisateurs
